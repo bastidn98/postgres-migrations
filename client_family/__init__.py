@@ -1,12 +1,27 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_migrate import Migrate
-from .models import db
+import os
+from logging import getLogger, basicConfig
+from dotenv import load_dotenv
+from .app import init_admin, init_db
+from .models import db 
+
+load_dotenv()
+
+basicConfig(level='DEBUG') # TODO remove
+logger = getLogger(__name__)
+
+
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://nbastida@localhost:5432/sqladmin'
-    db.init_app(app)
+    app.config['SECRET_KEY'] = os.urandom(12).hex()
+    init_db(app)
     migrate = Migrate(app, db)
+    init_admin(app)
+
+    # Re routes root of flask admin
+    app.add_url_rule('/', 'index', lambda: redirect(url_for("client_family.index_view")))
     return app
 
 if __name__ == "__main__":
