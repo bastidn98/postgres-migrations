@@ -25,8 +25,8 @@ def upgrade():
     x=1
 
 def downgrade():
-    op.execute("DROP TRIGGER trig_check_client_family_head_constraint ON \"ClientFamily\";")
-    op.execute("DROP FUNCTION check_client_head_constraint();")
+    op.execute("DROP TRIGGER trig_check_client_family_head_constraint ON \"client_family\";")
+    op.execute("DROP FUNCTION check_client_family_head_constraint();")
 
 if __name__ == "__main__":
     upgrade()
