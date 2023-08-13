@@ -34,7 +34,7 @@ def init_db(app):
                 USER = 'postgres'
                 PSWD = 'postgres'
                 HOST = 'localhost:5432'
-                DB = os.getenv('LOCAL_testdb_DB', 'testdb')
+                DB = os.getenv('LOCAL_TEST_DB', 'testdb')
             case _:
                 raise Exception('Please set "ENV" environment to "prod" or "dev"')
         
