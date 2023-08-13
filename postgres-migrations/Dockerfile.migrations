@@ -1,0 +1,19 @@
+# Use a Python base image
+FROM python:3.8
+
+# Install Alembic, psycopg2-binary, and python-dotenv
+RUN pip install alembic psycopg2-binary python-dotenv
+
+# Install psql
+RUN apt-get update && apt-get install -y postgresql-client
+
+RUN mkdir /migrations
+# Copy custom Alembic configuration files
+COPY ./alembic.ini /alembic.ini
+COPY ./env.py /migrations/env.py
+
+COPY migrate.sh /migrate.sh
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /migrate.sh
+RUN chmod +x wait-for-it.sh
+ENTRYPOINT [ "/migrate.sh" ]
