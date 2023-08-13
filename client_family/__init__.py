@@ -11,8 +11,6 @@ load_dotenv()
 basicConfig(level='DEBUG') # TODO remove
 logger = getLogger(__name__)
 
-
-
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.urandom(12).hex()
@@ -22,6 +20,10 @@ def create_app():
 
     # Re routes root of flask admin
     app.add_url_rule('/', 'index', lambda: redirect(url_for("client_family.index_view")))
+
+    match os.getenv('ENV', 'dev').lower():
+        case 'dev':
+            app.debug = True
     return app
 
 if __name__ == "__main__":
