@@ -1,5 +1,5 @@
 import pytest
-from .fixtures import test_client
+from .fixtures import test_app, test_client
 from client_family.models import db, ClientFamily
 
 def test_family_head_exists_as_client(test_client):
