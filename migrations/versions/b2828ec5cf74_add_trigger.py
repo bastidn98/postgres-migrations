@@ -17,7 +17,7 @@ branch_labels = None
 depends_on = None
 
 def upgrade():
-    with open(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))+'/client_family/check_client_head_trigger.sql') as f:
+    with open(os.path.dirname(__file__)+'/check_client_head_trigger.sql') as f:
         trigger_sql = f.read()
 
     op.execute(trigger_sql)
