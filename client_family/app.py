@@ -19,10 +19,22 @@ def init_admin(app):
 def init_db(app):
     '''Sets up database urls''' 
     if not app.config.get('SQLALCHEMY_DATABASE_URI', None):
-        USER = os.environ['POSTGRES_USER']
-        PSWD = os.environ['POSTGRES_PSWD']
-        HOST = os.environ['POSTGRES_HOST']
-        DB = os.environ['POSTGRES_DBNAME']
+        match os.getenv('ENV', 'dev'):
+            case 'prod':
+                USER = os.environ['POSTGRES_USER']
+                PSWD = os.environ['POSTGRES_PSWD']
+                HOST = os.environ['POSTGRES_HOST']
+                DB = os.environ['POSTGRES_DBNAME']
+            case 'dev':
+                USER = 'postgres'
+                PSWD = None
+                HOST = 'localhost:5432'
+                DB = 'devdb'
+            case 'test':
+                USER = 'postgres'
+                PSWD = None
+                HOST = 'localhost:5432'
+                DB = 'testdb'
         
         app.config['SQLALCHEMY_DATABASE_URI']=f'postgresql+psycopg2://{USER}{":"+PSWD if PSWD else ""}@{HOST}/{DB}'
         
