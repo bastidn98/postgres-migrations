@@ -49,7 +49,7 @@ def get_clients(retries=3):
 
 def make_client_choices(retries=3):
     client_data = get_clients(retries)
-    return [(client['code'], f'{client["name"]} ({client["code"]})') for client in client_data]
+    return [(f"{client['code']}-{client['name']}", f'{client["name"]} ({client["code"]})') for client in client_data]
     
 if __name__ == "__main__":
     a = make_client_choices()
