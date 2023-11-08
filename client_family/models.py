@@ -25,7 +25,7 @@ class ClientFamily(db.Model):
         return f'<ClientFamily {self.client} - {self.family_head}>'
 
     def __str__(self):
-        return f'{self.family_head}: \n{self.client}'
+        return f'\n{self.client}: {self.family_head}'
 
     def toJson(self):
         return {
