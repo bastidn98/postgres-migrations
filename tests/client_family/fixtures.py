@@ -12,3 +12,7 @@ def test_app():
     app.config['TESTING'] = True
     with app.app_context():
         yield app
+
+@pytest.fixture()
+def runner(test_app):
+    return test_app.test_cli_runner()
