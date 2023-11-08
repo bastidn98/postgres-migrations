@@ -31,11 +31,6 @@ def init_db(app):
                 PSWD = os.getenv('DEV_PSWD', '')
                 HOST = os.getenv('DEV_HOST_PORT')
                 DB = os.getenv('DEV_DBNAME', 'clientfam')
-            # case 'test':
-            #     USER = os.getenv('DEV_USER', 'postgres')
-            #     PSWD = os.getenv('DEV_PSWD', '')
-            #     HOST = os.getenv('DEV_HOST_PORT')
-            #     DB = os.getenv('DEV_DBNAME', 'test')
             case _:
                 raise Exception('Please set "ENV" environment to "prod" or "dev"')
         
