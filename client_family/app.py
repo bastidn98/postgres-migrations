@@ -1,6 +1,7 @@
 from flask_admin import Admin
 import os
 from logging import getLogger
+from flask_migrate import Migrate, upgrade
 from .flask_admin import HomePageRedirect, ClassFamilyModelView
 from .models import db, ClientFamily
 
@@ -26,15 +27,15 @@ def init_db(app):
                 HOST = os.environ['PROD_HOST']
                 DB = os.environ['PROD_DBNAME']
             case 'dev':
-                USER = 'postgres'
-                PSWD = 'postgres'
-                HOST = 'localhost:5432'
-                DB = os.getenv('LOCAL_DEV_DB', 'devdb')
-            case 'test':
-                USER = 'postgres'
-                PSWD = 'postgres'
-                HOST = 'localhost:5432'
-                DB = os.getenv('LOCAL_TEST_DB', 'testdb')
+                USER = os.getenv('DEV_USER', 'postgres')
+                PSWD = os.getenv('DEV_PSWD', '')
+                HOST = os.getenv('DEV_HOST_PORT')
+                DB = os.getenv('DEV_DBNAME', 'clientfam')
+            # case 'test':
+            #     USER = os.getenv('DEV_USER', 'postgres')
+            #     PSWD = os.getenv('DEV_PSWD', '')
+            #     HOST = os.getenv('DEV_HOST_PORT')
+            #     DB = os.getenv('DEV_DBNAME', 'test')
             case _:
                 raise Exception('Please set "ENV" environment to "prod" or "dev"')
         
@@ -43,3 +44,19 @@ def init_db(app):
     db.init_app(app)
     return True
             
+def init_migrate(app):
+    '''Sets up database migrations. Needs to have postgres set as database type, and have "REBUILD_DB" on. 
+    Double checks this is in dev environment... just in case. Otherwise need to use "force" option'''
+    migrate = Migrate(app, db) # Setting up migrations with alembic 
+    if os.environ['REBUILD_DB'].lower() in ('t', 'true', 'yes', 'y', 'force'):
+        if os.environ['ENV'].lower() not in ('dev', 'development', 'local'):
+            if os.environ['REBUILD_DB'].lower() != 'force':
+                logger.error(f'REBUILD_DB is not set to force, but DEPLOY_ENV is not dev (it\'s {os.environ["DEPLOY_ENV"]}). Not rebuilding')
+                return False
+        with app.app_context():
+            db.reflect()
+            db.drop_all()
+            upgrade()
+            logger.info('Dropped and Rebuilt database (no data)')
+            return True
+    return False

@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 import os
 from logging import getLogger, basicConfig
 from dotenv import load_dotenv
-from .app import init_admin, init_db
+from .app import init_admin, init_db, init_migrate
 from .models import db 
 
 load_dotenv()
@@ -15,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.urandom(12).hex()
     init_db(app)
-    migrate = Migrate(app, db)
+    init_migrate(app)
     init_admin(app)
 
     # Re routes root of flask admin
