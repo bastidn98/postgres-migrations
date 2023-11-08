@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
-from .app import init_admin, init_db, init_migrate
+from .app import init_admin, init_db, init_migrate, init_blueprints
 from .models import db 
 from .logger import logging
 
@@ -16,6 +16,7 @@ def create_app():
     init_db(app)
     init_migrate(app)
     init_admin(app)
+    init_blueprints(app)
 
     # Re routes root of flask admin
     app.add_url_rule('/', 'index', lambda: redirect(url_for("client_family.index_view")))

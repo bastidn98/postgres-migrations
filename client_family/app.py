@@ -1,9 +1,10 @@
 from flask_admin import Admin
 import os
-from .logger import logging
 from flask_migrate import Migrate, upgrade
+from .logger import logging
 from .flask_admin import HomePageRedirect, ClassFamilyModelView
 from .models import db, ClientFamily
+from .importer import importer_bp
 
 logger = logging.getLogger(__package__)
 
@@ -57,3 +58,9 @@ def init_migrate(app):
             logger.info('Dropped and Rebuilt database (no data)')
             return True
     return False
+
+def init_blueprints(app):
+    '''Registers blueprints to app'''
+    app.register_blueprint(importer_bp)
+    logger.info('Added blueprints to app')
+    return True
