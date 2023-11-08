@@ -1,8 +1,8 @@
 import requests, json, boto3, os
 from dotenv import load_dotenv
-from logging import getLogger
+from .logger import logging
 
-logger = getLogger()
+logger = logging.getLogger(__package__)
 
 remote_user = "nbastida@treasuryspring.com"
 
@@ -52,21 +52,4 @@ def make_client_choices(retries=3):
     return [(client['code'], f'{client["name"]} ({client["code"]})') for client in client_data]
     
 if __name__ == "__main__":
-    import logging
-    logger = getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
-
-    # create console handler and set level to debug
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-
-    # create formatter
-    formatter = logging.Formatter('%(asctime)s - %(name)s.%(module)s.%(funcName)s - %(levelname)s - %(message)s')
-
-    # add formatter to ch
-    ch.setFormatter(formatter)
-
-    # add ch to logger
-    logger.addHandler(ch)
     a = make_client_choices()
-    x=1

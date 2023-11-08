@@ -1,15 +1,14 @@
 from flask import Flask, redirect, url_for
 from flask_migrate import Migrate
 import os
-from logging import getLogger, basicConfig
 from dotenv import load_dotenv
 from .app import init_admin, init_db, init_migrate
 from .models import db 
+from .logger import logging
 
 load_dotenv()
 
-basicConfig(level='DEBUG') # TODO remove
-logger = getLogger(__name__)
+logger = logging.getLogger(__package__)
 
 def create_app():
     app = Flask(__name__)

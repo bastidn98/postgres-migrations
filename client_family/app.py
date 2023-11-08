@@ -1,11 +1,11 @@
 from flask_admin import Admin
 import os
-from logging import getLogger
+from .logger import logging
 from flask_migrate import Migrate, upgrade
 from .flask_admin import HomePageRedirect, ClassFamilyModelView
 from .models import db, ClientFamily
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__package__)
 
 def init_admin(app):
     '''Adds models to admin frontend'''
@@ -26,11 +26,13 @@ def init_db(app):
                 PSWD = os.environ['PROD_PSWD']
                 HOST = os.environ['PROD_HOST']
                 DB = os.environ['PROD_DBNAME']
+                logger.info('Connected to PROD database!!')
             case 'dev':
                 USER = os.getenv('DEV_USER', 'postgres')
                 PSWD = os.getenv('DEV_PSWD', '')
                 HOST = os.getenv('DEV_HOST_PORT')
                 DB = os.getenv('DEV_DBNAME', 'clientfam')
+                logger.info('Connected to DEV database!!')
             case _:
                 raise Exception('Please set "ENV" environment to "prod" or "dev"')
         
