@@ -1,8 +1,8 @@
 import pytest
-from .fixtures import test_app, test_client
+from .fixtures import test_app
 from client_family.models import db, ClientFamily
 
-def test_family_head_exists_as_client(test_client):
+def test_family_head_exists_as_client(test_app):
     existing_client = ClientFamily(client='client1', family_head='family_head1')
     db.session.add(existing_client)
     db.session.commit()
@@ -12,7 +12,7 @@ def test_family_head_exists_as_client(test_client):
         db.session.add(new_client_family)
         db.session.commit()
 
-def test_client_exists_as_family_head(test_client):
+def test_client_exists_as_family_head(test_app):
     existing_client = ClientFamily(client='client1', family_head='family_head1')
     db.session.add(existing_client)
     db.session.commit()
@@ -22,7 +22,7 @@ def test_client_exists_as_family_head(test_client):
         db.session.add(new_client_family)
         db.session.commit()
 
-def test_add_client_family_successfully(test_client):
+def test_add_client_family_successfully(test_app):
     new_client_family = ClientFamily(client='client1', family_head='family_head1')
     db.session.add(new_client_family)
     db.session.commit()
