@@ -3,3 +3,5 @@
 *__pycache__/
 .vscode
 excel_test.xlsx
+*.DS_Store*
+*.pkl

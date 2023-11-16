@@ -3,7 +3,7 @@ import click
 from flask.cli import with_appcontext
 import pandas as pd
 from .models import db, ClientFamily
-from .clients import make_client_dict
+from .clients import client_code_name_dict
 from .logger import logging
 
 logger = logging.getLogger(__package__)
@@ -17,7 +17,7 @@ def import_data_from_excel(file_path, sheet):
     # Read the Excel file
     df = pd.read_excel(file_path, sheet_name=sheet, skiprows=2, header=1)
     df = df.iloc[:, 1:][df['status'] == 'Active'].fillna(0)
-    code_to_name = make_client_dict()
+    code_to_name = client_code_name_dict()
 
     # Iterate over the DataFrame rows
     try:

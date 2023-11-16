@@ -37,9 +37,9 @@ class ClientFamily(Base, db.Model):
     excludes = ('id',)
     optionals = ('client_name', 'family_head_name')
     
-    __table_args__= (
-        CheckConstraint(client!=family_head, name='check_client_head_entry_constraint'),
-    )
+    # __table_args__= (
+    #     CheckConstraint(client!=family_head, name='check_client_head_entry_constraint'),
+    # ) Turning this off, potentially temporarily
 
     # NOTE: There is a database trigger associated with this table that enforces
     # additional constraints. The constraint makes it soa new ClientFamily cant 
