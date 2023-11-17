@@ -21,6 +21,8 @@ class ClassFamilyModelView(ModelView):
     form_overrides = {"client": Select2Field, "family_head": Select2Field} 
     can_edit = False
     create_template = 'create_with_check.html' 
+    can_export = True
+    export_types = ['csv']
 
     def create_form(self, obj=None):
         form = super().create_form(obj)

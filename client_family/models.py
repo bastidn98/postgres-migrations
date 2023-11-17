@@ -56,6 +56,8 @@ class ClientFamily(Base, db.Model):
     def toJson(self):
         return {
             "client": self.client,
-            "family_head": self.family_head
+            "family_head": self.family_head,
+            "client_name": self.client_name,
+            "family_head_name": self.family_head_name
         }
 

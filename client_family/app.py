@@ -3,7 +3,7 @@ import os
 from flask_migrate import Migrate, upgrade
 from .logger import logging
 from .flask_admin import HomePageRedirect, ClassFamilyModelView
-from .AJAX_endpoint import ajax_api
+from .views import ajax_api, api
 from .models import db, ClientFamily
 from .importer import importer_bp
 
@@ -64,5 +64,6 @@ def init_blueprints(app):
     '''Registers blueprints to app'''
     app.register_blueprint(importer_bp)
     app.register_blueprint(ajax_api)
+    app.register_blueprint(api)
     logger.info('Added blueprints to app')
     return True
