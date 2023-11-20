@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  client_family:
+    build:
+      context: ./client_family
+      dockerfile: Dockerfile
+    container_name: client_family
+    volumes:
+      - ./client_family:/client_family
+    ports:
+      - 5003:5000
+    depends_on:
+      - db
+      # - migrations
+    env_file:
+      - .env
+    environment:
+      - ENV=prod
+      - DIRECT_CONNECT=false
+      - REBUILD_DB=false
+
+  db:
+    image: postgres:15
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  migrations:
+    build: 
+      context: ./docker-migrations
+      dockerfile: Dockerfile.migrations
+    container_name: migrations_container
+    env_file:
+      - .env
+    volumes:
+      - ./migrations/versions:/migrations/versions # Mounts reivisions directory over
+    depends_on:
+      - db
+
+volumes:
+  postgres_data: # Generally better to use a docker volume, instead of manually creating a dir and using a bind volume, due to efficienc

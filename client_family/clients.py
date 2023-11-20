@@ -17,8 +17,10 @@ query{
 }
 '''
 
-# graphql_url = 'internal-core-unprotected-1806904533.eu-west-2.elb.amazonaws.com:80'
-graphql_url = 'ip-172-31-5-83.eu-west-2.compute.internal:8000'
+graphql_url = 'internal-core-unprotected-1806904533.eu-west-2.elb.amazonaws.com:80'
+if os.getenv('DIRECT_CONNECT', 'false').lower() in ('true', 'yes', 'y', 't'):
+    graphql_url = 'ip-172-31-5-83.eu-west-2.compute.internal:8000'
+    logger.info('Using direct connection to Core Server')
 
 
 def get_clients(retries=3):
