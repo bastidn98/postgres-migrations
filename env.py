@@ -25,7 +25,8 @@ logger = logging.getLogger('alembic.env')
 USER = os.getenv('POSTGRES_USER', 'postgres')
 PSWD = os.getenv('POSTGRES_PASSWORD', 'postgres')
 DB = os.getenv('DB', None)
-DATABASE_URL = f'postgresql+psycopg2://{USER}{":"+PSWD if PSWD else ""}@postgres:5432/{DB}'
+HOST = os.getenv('PROD_HOST', 'postgres')
+DATABASE_URL = f'postgresql+psycopg2://{USER}{":"+PSWD if PSWD else ""}@{HOST}:5432/{DB}'
 
 if not DB:
     raise Exception('DB must be set as an environment variable')
