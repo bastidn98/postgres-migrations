@@ -1,25 +1,25 @@
 version: '3'
 
 services:
-  postgres:
-    build: 
-      context: ./postgres-migrations
-      dockerfile: Dockerfile.postgres
-    container_name: postgres_container
+  db:
+    image: postgres:15
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
-    env_file:
-      - .env
+      - "5432:5432" 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
 
   migrations:
     build: 
-      context: ./postgres-migrations
+      context: ./docker-migrations
       dockerfile: Dockerfile.migrations
     container_name: migrations_container
     env_file:
       - .env
     volumes:
       - ./migrations/versions:/migrations/versions # Mounts reivisions directory over
-      - ./postgres-migrations/dummy-data.csv:/dummy-data.csv
     depends_on:
-      - postgres
+      - db
